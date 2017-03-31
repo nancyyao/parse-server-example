@@ -11,14 +11,32 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
+/*
+var pushConfig = {};
+if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
+    pushConfig['android'] = { senderId: process.env.GCM_SENDER_ID || '',
+                              apiKey: process.env.GCM_API_KEY || ''};
+}
+if (process.env.APNS_ENABLE) {
+    pushConfig['ios'] = [
+        {
+            pfx: 'ParsePushDevelopmentCertificate.p12', // P12 file only
+            bundleId: 'buildherhackathon.BuildHerApp',  // change to match bundleId
+            production: false // dev certificate
+        }
+    ]
+}
+*/
+
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'BuildHeriOS',
+  appId: process.env.APP_ID || 'BuildHerApp',
   masterKey: process.env.MASTER_KEY || 'wiccans2012', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  serverURL: process.env.SERVER_URL || 'http://buildher.herokuapp.com/parse',//'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  push: pushConfig,
   liveQuery: {
-    classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+    classNames: ["Announcement", "Map", "Schedule", "Sponsor"] // List of classes to support for query subscriptions
   } /*,
   var devCertPath = path.resolve(__dirname, 'ParsePushDevelopmentCertificate.p12');
   var pushConfig = {'ios': [
